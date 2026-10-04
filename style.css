@@ -1,0 +1,299 @@
+/* =========================================================
+   DRUNK SNAKE — 界面样式
+   风格：卡通平涂 + 粗黑描边 + 硬阴影（无渐变）
+   想换配色只改 :root 里的变量即可
+   ========================================================= */
+
+:root {
+  --ink:      #16121c;   /* 描边 / 阴影的黑 */
+  --pink:     #ff3d7f;   /* 主按钮 */
+  --pink-hi:  #ff6ba1;
+  --green:    #8ee04f;
+  --yellow:   #ffd23f;
+  --purple:   #2b2148;   /* 面板底色 */
+  --cream:    #fff8e7;   /* HUD 底色 */
+
+  --font-title: "Arial Black", "Segoe UI Black", Impact, system-ui, sans-serif;
+  --font-body:  "Segoe UI", Arial, "Microsoft YaHei", sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+[hidden] { display: none !important; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #5ec24a;
+  font-family: var(--font-body);
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: none;
+}
+
+#game { display: block; width: 100%; height: 100%; }
+
+/* ---------------------------------------------------------
+   粗描边文字：8 个方向的实心投影拼出黑边，最后一条是硬阴影
+   --------------------------------------------------------- */
+.ink,
+.title,
+.btn,
+.score,
+.tag {
+  text-shadow:
+    -3px -3px 0 var(--ink),  3px -3px 0 var(--ink),
+    -3px  3px 0 var(--ink),  3px  3px 0 var(--ink),
+    -3px    0 0 var(--ink),  3px    0 0 var(--ink),
+     0   -3px 0 var(--ink),    0    3px 0 var(--ink),
+     0    8px 0 var(--ink);
+}
+
+/* HUD 数字不用底部硬阴影，否则会压到下面那行字 */
+.hud-value {
+  text-shadow:
+    -3px -3px 0 var(--ink),  3px -3px 0 var(--ink),
+    -3px  3px 0 var(--ink),  3px  3px 0 var(--ink),
+    -3px    0 0 var(--ink),  3px    0 0 var(--ink),
+     0   -3px 0 var(--ink),    0    3px 0 var(--ink);
+}
+
+.ink-sm,
+.hud-cap,
+.hint {
+  text-shadow:
+    -2px -2px 0 var(--ink),  2px -2px 0 var(--ink),
+    -2px  2px 0 var(--ink),  2px  2px 0 var(--ink),
+    -2px    0 0 var(--ink),  2px    0 0 var(--ink),
+     0   -2px 0 var(--ink),    0    2px 0 var(--ink);
+}
+
+/* ---------------------------------------------------------
+   HUD
+   --------------------------------------------------------- */
+#hud {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.hud-block {
+  background: var(--cream);
+  border: 4px solid var(--ink);
+  border-radius: 14px;
+  box-shadow: 0 5px 0 var(--ink);
+  padding: 7px 14px 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 7px;
+}
+
+.hud-value {
+  font-family: var(--font-title);
+  font-size: 26px;
+  line-height: 1;
+  color: var(--yellow);
+}
+
+.hud-cap {
+  font-family: var(--font-title);
+  font-size: 11px;
+  letter-spacing: .14em;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.meter {
+  width: 168px;
+  height: 15px;
+  background: #cfc7b4;
+  border: 3px solid var(--ink);
+  border-radius: 9px;
+  overflow: hidden;
+}
+
+.meter-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--green);
+  transition: width .16s linear, background .25s linear;
+}
+
+/* ---------------------------------------------------------
+   右上角静音开关
+   --------------------------------------------------------- */
+.mute-btn {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 20;
+  font-family: var(--font-title);
+  font-size: 13px;
+  letter-spacing: .12em;
+  color: #fff;
+  background: var(--green);
+  border: 4px solid var(--ink);
+  border-radius: 12px;
+  padding: 9px 15px;
+  cursor: pointer;
+  box-shadow: 0 5px 0 var(--ink);
+  transition: transform .06s linear, background .12s linear, box-shadow .06s linear;
+  text-shadow:
+    -2px -2px 0 var(--ink),  2px -2px 0 var(--ink),
+    -2px  2px 0 var(--ink),  2px  2px 0 var(--ink),
+    -2px    0 0 var(--ink),  2px    0 0 var(--ink),
+     0   -2px 0 var(--ink),    0    2px 0 var(--ink);
+}
+
+.mute-btn:hover { transform: translateY(-2px); box-shadow: 0 7px 0 var(--ink); }
+.mute-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--ink); }
+.mute-btn.off { background: #7a7192; color: #ded7f0; }
+
+/* ---------------------------------------------------------
+   遮罩 + 面板
+   --------------------------------------------------------- */
+#overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(24, 16, 38, .84);
+  z-index: 10;
+}
+
+#overlay.show { display: flex; }
+
+.panel {
+  width: min(580px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  padding: 30px 34px 26px;
+  background: var(--purple);
+  border: 6px solid var(--ink);
+  border-radius: 28px;
+  box-shadow: 0 12px 0 rgba(0, 0, 0, .45);
+  text-align: center;
+  color: #fff;
+}
+
+.title {
+  font-family: var(--font-title);
+  font-size: clamp(34px, 6.4vw, 60px);
+  line-height: 1.05;
+  letter-spacing: .01em;
+  color: #fff;
+  transform: rotate(-2deg);
+  margin-bottom: 10px;
+}
+
+.sub {
+  font-family: var(--font-title);
+  font-size: 12px;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 22px;
+}
+
+.rules {
+  font-size: 15px;
+  line-height: 1.85;
+  font-weight: 600;
+  color: #ded6f5;
+  margin: 0 auto 18px;
+  max-width: 440px;
+}
+
+.keys {
+  font-size: 13px;
+  font-weight: 700;
+  color: #b9aee0;
+  margin-bottom: 24px;
+}
+
+.key {
+  display: inline-block;
+  min-width: 26px;
+  margin: 0 2px;
+  padding: 2px 7px;
+  background: var(--cream);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  border-radius: 7px;
+  box-shadow: 0 3px 0 var(--ink);
+  font-family: var(--font-title);
+  font-size: 12px;
+}
+
+.score {
+  font-family: var(--font-title);
+  font-size: 30px;
+  color: var(--yellow);
+  margin-bottom: 8px;
+}
+
+.final {
+  font-size: 14px;
+  font-weight: 700;
+  color: #b9aee0;
+  margin-bottom: 24px;
+}
+
+.tag {
+  font-family: var(--font-title);
+  font-size: 15px;
+  color: var(--green);
+}
+
+/* ---------------------------------------------------------
+   漫画风按钮：平涂色块 + 粗黑边 + 硬阴影
+   --------------------------------------------------------- */
+.btn {
+  font-family: var(--font-title);
+  font-size: 22px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--pink);
+  border: 5px solid var(--ink);
+  border-radius: 18px;
+  padding: 12px 46px;
+  cursor: pointer;
+  box-shadow: 0 7px 0 var(--ink);
+  transition: transform .06s linear, background .12s linear, box-shadow .06s linear;
+}
+
+.btn:hover { background: var(--pink-hi); transform: translateY(-2px); box-shadow: 0 9px 0 var(--ink); }
+.btn:active { transform: translateY(5px); box-shadow: 0 2px 0 var(--ink); }
+.btn:focus-visible { outline: 4px solid var(--yellow); outline-offset: 4px; }
+
+.hint {
+  margin-top: 16px;
+  font-family: var(--font-title);
+  font-size: 11px;
+  letter-spacing: .1em;
+  color: #fff;
+  text-transform: uppercase;
+  opacity: .85;
+}
+
+/* ---------------------------------------------------------
+   窄屏
+   --------------------------------------------------------- */
+@media (max-width: 640px) {
+  #hud { top: 10px; left: 10px; gap: 6px; }
+  .hud-block { padding: 5px 9px 4px; border-width: 3px; box-shadow: 0 4px 0 var(--ink); }
+  .hud-value { font-size: 20px; }
+  .meter { width: 96px; height: 12px; }
+  .panel { padding: 24px 20px 20px; }
+  .btn { font-size: 19px; padding: 11px 34px; }
+  .rules { font-size: 14px; }
+}

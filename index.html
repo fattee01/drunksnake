@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>DRUNK SNAKE</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- 游戏画面 -->
+<canvas id="game"></canvas>
+
+<!-- 左上角 HUD -->
+<div id="hud">
+  <div class="hud-block">
+    <div class="hud-value" id="bottleCount">0</div>
+    <div class="hud-cap">BOTTLES</div>
+  </div>
+
+  <div class="hud-block">
+    <div class="meter"><div class="meter-fill" id="drunkFill"></div></div>
+    <div class="hud-cap" id="drunkText">SOBER</div>
+  </div>
+
+  <div class="hud-block">
+    <div class="hud-cap" id="speedText">SPEED 0</div>
+  </div>
+</div>
+
+<!-- 右上角静音开关（M 键也可以切） -->
+<button id="muteBtn" class="mute-btn" type="button">SOUND ON</button>
+
+<!-- 开始 / 结算界面 -->
+<div id="overlay" class="show">
+
+  <section class="panel" id="startPanel">
+    <h1 class="title">DRUNK SNAKE</h1>
+    <p class="sub">A DRUNKEN SNAKE GAME</p>
+
+    <p class="rules">
+      在草地上游走，把遇到的酒瓶一瓶瓶喝掉。<br>
+      喝得越多，小蛇的速度和方向就越不听使唤。<br>
+      看看你能撑到第几瓶才倒下。
+    </p>
+
+    <p class="keys">
+      <span class="key">←</span><span class="key">→</span> or
+      <span class="key">A</span><span class="key">D</span> to steer
+      &nbsp;·&nbsp; tap left / right on mobile
+    </p>
+
+    <button class="btn" id="startBtn">START</button>
+    <p class="hint">Watch the fence. Don't tie yourself in a knot.</p>
+  </section>
+
+  <section class="panel" id="overPanel" hidden>
+    <h1 class="title">WIPED OUT!</h1>
+    <p class="sub" id="overReason">YOU CRASHED INTO THE FENCE</p>
+
+    <p class="score"><span id="overCount">0</span> BOTTLES</p>
+    <p class="final">FINAL STATE: <span class="tag" id="overLabel">SOBER</span></p>
+
+    <button class="btn" id="overBtn">RETRY</button>
+    <p class="hint">Press SPACE to restart</p>
+  </section>
+
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>
